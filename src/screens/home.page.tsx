@@ -1,5 +1,5 @@
 import TabsContent from '../components/tabs.content';
-import { decrement, increment } from '../redux/counter/counter.slide';
+import { decrement, increment, incrementSaga } from '../redux/counter/counter.slide';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 
 const HomePage = () => {
@@ -17,7 +17,7 @@ const HomePage = () => {
                         <button className="btn btn-warning" onClick={() => dispatch(decrement())}>Decrease -1</button>
                     </div>
                     <div className='mt-5'>
-                        <button className="btn btn-secondary mx-3" >Increase Saga +2</button>
+                        <button className="btn btn-secondary mx-3" onClick={() => dispatch(incrementSaga())}>Increase Saga +2</button>
                         <button className="btn btn-dark" >Decrease Saga -2</button>
                     </div>
                 </div>
