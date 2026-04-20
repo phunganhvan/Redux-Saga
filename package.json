@@ -4,8 +4,7 @@
   "version": "1.0.0",
   "type": "module",
   "author": {
-    "name": "Hỏi Dân IT vs Eric",
-    "url": "https://hoidanit.com.vn"
+    "name": "Phung Anh Van"
   },
   "scripts": {
     "dev": "vite",
@@ -22,7 +21,8 @@
     "react-dom": "18.2.0",
     "react-redux": "8.1.3",
     "react-router-dom": "6.18.0",
-    "react-toastify": "9.1.3"
+    "react-toastify": "9.1.3",
+    "redux-saga": "1.2.3"
   },
   "devDependencies": {
     "@types/react": "18.2.37",

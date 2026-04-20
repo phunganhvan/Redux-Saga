@@ -1,6 +1,4 @@
-### React Redux Saga Starter - Typescript (Hỏi Dân IT)
-
-Template này được sử dụng cho series React State Manager của tác giả Hỏi Dân IT (Eric)
+### React Redux Saga Starter - Typescript 
 
 Các bước cần làm:
 
