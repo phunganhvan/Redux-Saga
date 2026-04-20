@@ -12,7 +12,7 @@ function* handleDecrease (action?: string){
 }
 
 function* counterSaga() {
-    console.log("counterSaga is running")
+    // console.log("counterSaga is running")
     yield takeLatest("counter/incrementSaga", handleIncrease)
     yield takeLatest("counter/decrementSaga", handleDecrease)
     // takeLeading / takeEvery / takeLatest
