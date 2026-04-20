@@ -37,6 +37,14 @@ export const counterSlice = createSlice({
             console.log("incrementSagaFinish is running", action);
             state.status = "idle"
             state.value += action.payload
+        },
+        decrementSaga: (state) => {
+            state.status = "loading"
+        },
+        decrementSagaFinish: (state, action: PayloadAction<number>) => {
+            console.log("decrementSagaFinish is running", action);
+            state.status = "idle"
+            state.value -= action.payload
         }
     },
     // The `extraReducers` field lets the slice handle actions defined elsewhere,
@@ -56,7 +64,7 @@ export const counterSlice = createSlice({
     },
 })
 
-export const { increment, decrement, incrementByAmount, incrementSaga } = counterSlice.actions
+export const { increment, decrement, incrementByAmount, incrementSaga, decrementSaga } = counterSlice.actions
 
 
 
