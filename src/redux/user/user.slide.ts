@@ -12,6 +12,9 @@ export interface UserState {
 
     isUpdating: boolean,
     isUpdatingSuccess: boolean,
+
+    isDeleting: boolean,
+    isDeletingSuccess: boolean,
 }
 
 const initialState: UserState = {
@@ -25,6 +28,10 @@ const initialState: UserState = {
 
     isUpdating: false,
     isUpdatingSuccess: false,
+
+
+    isDeleting: false,
+    isDeletingSuccess: false,
 }
 export const incrementSagaFinish = createAction<{value: number}>("user/incrementSagaFinish");
 
@@ -39,6 +46,10 @@ export const createUserError = createAction<{errors: string}>("user/createUserEr
 export const updateUserPending = createAction<{id: number; email: string; name: string}>("user/updateUserPending");
 export const updateUserSuccess = createAction("user/updateUserSuccess");
 export const updateUserError = createAction<{errors: string}>("user/updateUserError");
+
+export const deleteUserPending = createAction<{id: number}>("user/deleteUserPending");
+export const deleteUserSuccess = createAction("user/deleteUserSuccess");
+export const deleteUserError = createAction<{errors: string}>("user/deleteUserError");
 
 export const userSlice = createSlice({
     name: "user",
@@ -85,6 +96,19 @@ export const userSlice = createSlice({
             .addCase(updateUserError, (state, action) => {
                 state.isUpdating = false;
                 state.isUpdatingSuccess = false;
+                state.errors = action?.payload?.errors;
+            })
+            .addCase(deleteUserPending, (state) => {
+                state.isDeleting = true;
+                state.isDeletingSuccess = false;
+            })
+            .addCase(deleteUserSuccess, (state) => {
+                state.isDeleting = false;
+                state.isDeletingSuccess = true;
+            })
+            .addCase(deleteUserError, (state, action) => {
+                state.isDeleting = false;
+                state.isDeletingSuccess = false;
                 state.errors = action?.payload?.errors;
             })
 

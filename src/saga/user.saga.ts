@@ -1,6 +1,6 @@
 import { call, takeEvery, put } from "redux-saga/effects";
 import { IUser } from "../types/backend";
-import { fetchUserError, fetchUserPending, fetchUserSuccess, updateUserSuccess } from "../redux/user/user.slide";
+import { deleteUserSuccess, fetchUserError, fetchUserPending, fetchUserSuccess, updateUserSuccess } from "../redux/user/user.slide";
 import { createUserSuccess } from "../redux/user/user.slide";
 import { PayloadAction } from "@reduxjs/toolkit";
 
@@ -31,6 +31,15 @@ const updateUser = async (payload: { id: number; email: string; name: string }) 
             email: payload.email,
             name: payload.name,
         }),
+        headers: {
+            "Content-Type": " application/json"
+        }
+    });
+    return res.json();
+}
+const deleteUser = async (payload: { id: number }) => {
+    const res = await fetch(`http://localhost:8000/users/${payload.id}`, {
+        method: "DELETE",
         headers: {
             "Content-Type": " application/json"
         }
@@ -79,11 +88,25 @@ function* handleUpdateUser(action: PayloadAction<{ id: number; email: string; na
     }
 }
 
+function* handleDeleteUser(action: PayloadAction<{ id: number }>) {
+    try {
+        yield call(deleteUser, action.payload);
+        yield put(deleteUserSuccess());
+
+        // After deleting the user, fetch the updated list of users
+        yield put(fetchUserPending());
+    } catch (error) {
+        console.error("Error deleting user:", error);
+        yield put(fetchUserError({ errors: error.message || "An error occurred while deleting the user." }));
+    }
+}
+
 
 function* userSaga() {
     // console.log("userSaga is running");
     yield takeEvery("user/fetchUserPending", handleFetchUser);
     yield takeEvery("user/createUserPending", handleCreateUser);
     yield takeEvery("user/updateUserPending", handleUpdateUser);
+    yield takeEvery("user/deleteUserPending", handleDeleteUser);
 }
 export default userSaga;
