@@ -8,6 +8,7 @@ import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import { toast } from 'react-toastify';
 import Spinner from 'react-bootstrap/esm/Spinner';
 
+
 const BlogCreateModal = (props: any) => {
     const { isOpenCreateModal, setIsOpenCreateModal } = props;
 
