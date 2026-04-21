@@ -4,6 +4,11 @@ export interface IUser {
     email: string
 }
 
+export interface ILogin{
+    email: string,
+    password: string
+}
+
 export interface IBlog {
     id: number,
     title: string,

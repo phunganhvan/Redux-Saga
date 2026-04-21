@@ -5,10 +5,14 @@ import Form from 'react-bootstrap/Form';
 import { useEffect, useState } from 'react';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { NavLink, Link } from 'react-router-dom';
+import { logout } from '../redux/user/user.slide';
+import { useAppDispatch } from '../redux/hooks';
 
 function Header() {
 
     const [mode, setMode] = useState("light")
+
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         const body = document.querySelector("body");
@@ -46,7 +50,7 @@ function Header() {
                         Login
                     </NavLink>
 
-                    <NavDropdown.Item href="#">
+                    <NavDropdown.Item href="#" onClick={() => dispatch(logout())}>
                         Logout
                     </NavDropdown.Item>
                 </NavDropdown>

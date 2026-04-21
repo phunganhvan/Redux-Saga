@@ -1,5 +1,5 @@
 import { createAction, createSlice} from "@reduxjs/toolkit"
-import { IUser } from "../../types/backend";
+import { ILogin, IUser } from "../../types/backend";
 
 export interface UserState {
     isPending: boolean,
@@ -33,8 +33,9 @@ const initialState: UserState = {
     isDeleting: false,
     isDeletingSuccess: false,
 }
-export const incrementSagaFinish = createAction<{value: number}>("user/incrementSagaFinish");
 
+export const loginPending = createAction<ILogin>("auth/loginPending");
+export const logout = createAction("auth/logout");
 export const fetchUserPending = createAction("user/fetchUserPending");
 export const fetchUserSuccess = createAction<{data: IUser[]}>("user/fetchUserSuccess");
 export const fetchUserError = createAction<{errors: string}>("user/fetchUserError");
