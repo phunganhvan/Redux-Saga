@@ -1,6 +1,7 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit"
 import counterReducer from "./counter/counter.slide"
 import userReducer from "./user/user.slide"
+import blogReducer from "./blog/blog.slide"
 import createSagaMiddleware from "redux-saga"
 import RootSaga from "../saga/root.saga";
 
@@ -9,6 +10,7 @@ export const store = configureStore({
     reducer: {
         counter: counterReducer,
         user: userReducer,
+        blog: blogReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(sagaMiddleware),

@@ -2,7 +2,11 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { createBlogPending } from '../../redux/blog/blog.slide';
+import { useAppSelector, useAppDispatch } from '../../redux/hooks';
+import { toast } from 'react-toastify';
+import Spinner from 'react-bootstrap/esm/Spinner';
 
 const BlogCreateModal = (props: any) => {
     const { isOpenCreateModal, setIsOpenCreateModal } = props;
@@ -11,6 +15,7 @@ const BlogCreateModal = (props: any) => {
     const [author, setAuthor] = useState<string>("");
     const [content, setContent] = useState<string>("");
 
+    const dispatch = useAppDispatch();
 
 
     const handleSubmit = () => {
@@ -27,8 +32,22 @@ const BlogCreateModal = (props: any) => {
             return;
         }
         //call api => call redux
-        console.log({ title, author, content }) //payload
+        dispatch(createBlogPending({ title, author, content }));
     }
+    const isCreating = useAppSelector((state) => state.blog.isCreating);
+    const isCreatingSuccess = useAppSelector((state) => state.blog.isCreatingSuccess);
+    useEffect(() => {
+        if (isCreatingSuccess) {
+            setIsOpenCreateModal(false);
+            setTitle("");
+            setAuthor("");
+            setContent("");
+            toast.success("Create blog successfully!", {
+                position: toast.POSITION.TOP_RIGHT,
+                autoClose: 3000,
+            });
+        }
+    }, [isCreatingSuccess, setIsOpenCreateModal]);
 
     return (
         <>
@@ -73,10 +92,26 @@ const BlogCreateModal = (props: any) => {
                     </FloatingLabel>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button
-                        variant='warning'
-                        onClick={() => setIsOpenCreateModal(false)} className='mr-2'>Cancel</Button>
-                    <Button onClick={() => handleSubmit()}>Save</Button>
+                    {isCreating === false ? (
+                        <>
+                            <Button
+                                variant='warning'
+                                onClick={() => setIsOpenCreateModal(false)} className='mr-2'>Cancel</Button>
+                            <Button onClick={() => handleSubmit()}>Save</Button>
+                        </>
+                    ) : (
+                        <Button variant="primary" disabled>
+                            <Spinner
+                                as="span"
+                                animation="border"
+                                size="sm"
+                                role="status"
+                                aria-hidden="true"
+                            />
+                            &nbsp; Saving...
+                        </Button>
+                    )
+                    }
                 </Modal.Footer>
             </Modal>
         </>
