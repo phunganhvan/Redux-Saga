@@ -3,6 +3,10 @@ import Modal from 'react-bootstrap/Modal';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import { useState, useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { updateUserPending } from '../../redux/user/user.slide';
+import Spinner from 'react-bootstrap/esm/Spinner';
+import { toast } from 'react-toastify';
 
 const UserEditModal = (props: any) => {
     const { isOpenUpdateModal, setIsOpenUpdateModal, dataUser } = props;
@@ -11,6 +15,20 @@ const UserEditModal = (props: any) => {
     const [email, setEmail] = useState<string>("");
     const [name, setName] = useState<string>("");
 
+    const dispatch = useAppDispatch();
+    const isUpdating = useAppSelector((state) => state.user.isUpdating);
+    const isUpdatingSuccess = useAppSelector((state) => state.user.isUpdatingSuccess);
+
+    useEffect(() => {
+        if (isUpdatingSuccess) {
+            setIsOpenUpdateModal(false);
+            // Optionally, you can show a success message here using a toast or alert
+            toast.success("User updated successfully!", {
+                position: toast.POSITION.TOP_RIGHT,
+                autoClose: 3000,
+            });
+        }
+    }, [isUpdatingSuccess, setIsOpenUpdateModal]);
     useEffect(() => {
         if (dataUser?.id) {
             setId(dataUser?.id);
@@ -29,7 +47,7 @@ const UserEditModal = (props: any) => {
             alert("name empty");
             return;
         }
-        console.log({ email, name, id })
+        dispatch(updateUserPending({ id: id!, email, name }));
     }
 
     return (
@@ -66,10 +84,29 @@ const UserEditModal = (props: any) => {
                     </FloatingLabel>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button
-                        variant='warning'
-                        onClick={() => setIsOpenUpdateModal(false)} className='mr-2'>Cancel</Button>
-                    <Button onClick={() => handleSubmit()}>Confirm</Button>
+                    {isUpdating === false ? (
+                        <>
+                            <Button
+                                variant='warning'
+                                onClick={() => setIsOpenUpdateModal(false)} className='mr-2'>Cancel</Button>
+                            <Button onClick={() => handleSubmit()}>Confirm</Button>
+
+                        </>
+                    ) : (
+                        <>
+                            <Button variant="primary" disabled>
+                                <Spinner
+                                    as="span"
+                                    animation="border"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                />
+                                &nbsp; Updating...
+                            </Button>
+                        </>
+                    )
+                    }
                 </Modal.Footer>
             </Modal>
         </>
