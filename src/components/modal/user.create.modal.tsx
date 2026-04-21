@@ -2,13 +2,30 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { createUserPending } from '../../redux/user/user.slide';
+import Spinner from 'react-bootstrap/Spinner';
+import { toast } from 'react-toastify';
 
 const UserCreateModal = (props: any) => {
     const { isOpenCreateModal, setIsOpenCreateModal } = props;
 
     const [email, setEmail] = useState<string>("");
     const [name, setName] = useState<string>("");
+    const dispatch = useAppDispatch();
+    const isCreating = useAppSelector((state) => state.user.isCreating);
+    const isCreatingSuccess = useAppSelector((state) => state.user.isCreatingSuccess);
+
+    useEffect(() => {
+        if (isCreatingSuccess) {
+            setIsOpenCreateModal(false);
+            toast.success("User created successfully!", {
+                position: toast.POSITION.TOP_RIGHT,
+                autoClose: 3000,
+            });
+        }
+    }, [isCreatingSuccess, setIsOpenCreateModal]);
 
     const handleSubmit = () => {
         if (!email) {
@@ -20,7 +37,7 @@ const UserCreateModal = (props: any) => {
             return;
         }
         //call api => call redux
-        console.log({ email, name }) //payload
+        dispatch(createUserPending({ email, name }));
     }
 
     return (
@@ -57,10 +74,23 @@ const UserCreateModal = (props: any) => {
                     </FloatingLabel>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button
-                        variant='warning'
-                        onClick={() => setIsOpenCreateModal(false)} className='mr-2'>Cancel</Button>
-                    <Button onClick={() => handleSubmit()}>Save</Button>
+                    {isCreating === false ? (
+                        <>
+                            <Button variant='warning' onClick={() => setIsOpenCreateModal(false)} className='mr-2'>Cancel</Button>
+                            <Button onClick={() => handleSubmit()}>Save</Button>
+                        </>
+                    ) : (
+                        <Button variant="primary" disabled>
+                            <Spinner
+                                as="span"
+                                animation="border"
+                                size="sm"
+                                role="status"
+                                aria-hidden="true"
+                            />
+                            &nbsp; Saving...
+                        </Button>
+                    )}
                 </Modal.Footer>
             </Modal>
         </>

@@ -6,6 +6,9 @@ export interface UserState {
     isError: boolean,
     data: IUser[],
     errors: string,
+
+    isCreating: boolean,
+    isCreatingSuccess: boolean,
 }
 
 const initialState: UserState = {
@@ -13,12 +16,20 @@ const initialState: UserState = {
     isError: false,
     data: [ ],
     errors: "",
+    isCreating: false,
+    isCreatingSuccess: false,
 }
 export const incrementSagaFinish = createAction<{value: number}>("user/incrementSagaFinish");
 
 export const fetchUserPending = createAction("user/fetchUserPending");
 export const fetchUserSuccess = createAction<{data: IUser[]}>("user/fetchUserSuccess");
 export const fetchUserError = createAction<{errors: string}>("user/fetchUserError");
+
+export const createUserPending = createAction<{email: string; name: string}>("user/createUserPending");
+export const createUserSuccess = createAction("user/createUserSuccess");
+export const createUserError = createAction<{errors: string}>("user/createUserError");
+
+
 
 export const userSlice = createSlice({
     name: "user",
@@ -45,6 +56,14 @@ export const userSlice = createSlice({
                 state.isPending = false;
                 state.isError = true;
                 state.errors = action?.payload?.errors;   
+            })
+            .addCase(createUserPending, (state) => {
+                state.isCreating = true;
+                state.isCreatingSuccess = false;
+            })
+            .addCase(createUserSuccess, (state) => {
+                state.isCreating = false;
+                state.isCreatingSuccess = true;
             })
     },
 })

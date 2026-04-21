@@ -6,6 +6,7 @@ import UserEditModal from './modal/user.edit.modal';
 import UserDeleteModal from './modal/user.delete.modal';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { fetchUserPending } from '../redux/user/user.slide';
+import { IUser } from '../types/backend';
 
 function UsersTable() {
 
@@ -23,12 +24,12 @@ function UsersTable() {
         dispatch(fetchUserPending());
     }, [])
 
-    const handleEditUser = (user: any) => {
+    const handleEditUser = (user: IUser) => {
         setDataUser(user);
         setIsOpenUpdateModal(true);
     }
 
-    const handleDelete = (user: any) => {
+    const handleDelete = (user: IUser) => {
         setDataUser(user);
         setIsOpenDeleteModal(true);
     }
