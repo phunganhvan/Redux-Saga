@@ -3,7 +3,7 @@ import { IUser } from "../../types/backend";
 import { deleteUserSuccess, fetchUserError, fetchUserPending, fetchUserSuccess, updateUserSuccess } from "../../redux/user/user.slide";
 import { createUserSuccess } from "../../redux/user/user.slide";
 import { PayloadAction } from "@reduxjs/toolkit";
-import { fetchUsers, createUser, updateUser, deleteUser } from "./crudFn";
+import { fetchUsers, createUser, updateUser, deleteUser } from "./crudUserFn";
 
 function* handleFetchUser() {
     // console.log("handleFetchUser is running");

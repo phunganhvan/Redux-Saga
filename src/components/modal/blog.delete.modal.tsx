@@ -5,8 +5,15 @@ import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import Spinner from 'react-bootstrap/esm/Spinner';
+import { IBlog } from '../../types/backend';
 
-const BlogDeleteModal = (props: any) => {
+interface IProps {
+    dataBlog: IBlog,
+    isOpenDeleteModal: boolean,
+    setIsOpenDeleteModal: (isOpen: boolean) => void,
+}
+
+const BlogDeleteModal = (props: IProps) => {
     const { dataBlog, isOpenDeleteModal, setIsOpenDeleteModal } = props;
 
     const dispatch = useAppDispatch();

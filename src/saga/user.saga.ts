@@ -1,5 +1,5 @@
 import { takeEvery } from "redux-saga/effects";
-import { handleCreateUser, handleDeleteUser, handleFetchUser, handleUpdateUser } from "./userSagaFn/fetchFn";
+import { handleCreateUser, handleDeleteUser, handleFetchUser, handleUpdateUser } from "./userSagaFn/fetchUserFn";
 
 
 

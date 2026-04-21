@@ -7,10 +7,16 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { updateBlogPending } from '../../redux/blog/blog.slide';
 import Spinner from 'react-bootstrap/esm/Spinner';
 import { toast } from 'react-toastify';
+import { IBlog } from '../../types/backend';
 
-const BlogEditModal = (props: any) => {
+interface IProps {
+    isOpenUpdateModal: boolean;
+    setIsOpenUpdateModal: (isOpen: boolean) => void;
+    dataBlog: IBlog;
+}
+const BlogEditModal = (props: IProps) => {
     const { isOpenUpdateModal, setIsOpenUpdateModal, dataBlog } = props;
-    const [id, setId] = useState();
+    const [id, setId] = useState<number>();
 
     const [title, setTitle] = useState<string>("");
     const [author, setAuthor] = useState<string>("");
